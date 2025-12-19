@@ -14,6 +14,7 @@
 
 extern Logger CMU418Logger;
 
+//八位一个掩码
 template <typename T>
 struct __cmu418_vec {
   T value[VECTOR_WIDTH];

@@ -44,6 +44,8 @@ writePPMImage(int* data, int width, int height, const char *filename, int maxIte
 
         // convert back into 0-255 range, 8-bit channels
         unsigned char result = static_cast<unsigned char>(255.f * mapped);
+
+        // write RGB pixel (all channels same value, grayscale)
         for (int j = 0; j < 3; ++j)
             fputc(result, fp);
     }

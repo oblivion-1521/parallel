@@ -1,4 +1,4 @@
-
+# 先命名一些变量
 CXX=g++ -m64
 CXXFLAGS=-I../common -Iobjs/ -O3 -Wall
 

@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
     const int width = 1250;
     const int height = 750;
     const int maxIterations = 256;
-    int numThreads = 2;
+    int numThreads = 8;
 
     float x0 = -2.167;
     float x1 = 1.167;
