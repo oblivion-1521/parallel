@@ -170,12 +170,16 @@ void _cmu418_vdiv(__cmu418_vec<T> &vecResult, __cmu418_vec<T> &veca, __cmu418_ve
 
 void _cmu418_vshiftright_int(__cmu418_vec_int &vecResult, __cmu418_vec_int &veca, __cmu418_vec_int &vecb, __cmu418_mask &mask){
     for (int i = 0; i<VECTOR_WIDTH; i++)
+                                                        // vecb.value[i]是右移位数
 	vecResult.value[i] = mask.value[i] ? (veca.value[i] >> vecb.value[i]) : vecResult.value[i];
 }
 
+// 这个函数如果vecb是全1，那么就是把veca的最低位拿出来
 void _cmu418_vbitand_int(__cmu418_vec_int &vecResult, __cmu418_vec_int &veca, __cmu418_vec_int &vecb, __cmu418_mask &mask) {
     for (int i = 0; i<VECTOR_WIDTH; i++)
-	vecResult.value[i] = mask.value[i] ? (veca.value[i] & vecb.value[i]) : vecResult.value[i];
+	// 如果 mask[i] 是 false，result[i] 保持它原来的值 (vecResult.value[i])
+    // 并不是变成 0，也不是变成新的计算结果
+    vecResult.value[i] = mask.value[i] ? (veca.value[i] & vecb.value[i]) : vecResult.value[i];
 }
 
 
@@ -200,6 +204,7 @@ void _cmu418_vabs_float(__cmu418_vec_float &vecResult, __cmu418_vec_float &veca,
 void _cmu418_vabs_int(__cmu418_vec_int &vecResult, __cmu418_vec_int &veca, __cmu418_mask &mask) { _cmu418_vabs<int>(vecResult, veca, mask); }
 
 template <typename T>
+// v greater than(vgt)和v less than(vlt)用来比较大小, veq用来比较相等
 void _cmu418_vgt(__cmu418_mask &maskResult, __cmu418_vec<T> &veca, __cmu418_vec<T> &vecb, __cmu418_mask &mask) {
     for (int i=0; i<VECTOR_WIDTH; i++) {
 	maskResult.value[i] = mask.value[i] ? (veca.value[i] > vecb.value[i]) : maskResult.value[i];
@@ -230,6 +235,7 @@ void _cmu418_vlt_int(__cmu418_mask &maskResult, __cmu418_vec_int &veca, __cmu418
 template <typename T>
 void _cmu418_veq(__cmu418_mask &maskResult, __cmu418_vec<T> &veca, __cmu418_vec<T> &vecb, __cmu418_mask &mask) {
     for (int i=0; i<VECTOR_WIDTH; i++) {
+        // 同理，如果 mask[i] 是 false，maskResult[i] 保持原样！
 	maskResult.value[i] = mask.value[i] ? (veca.value[i] == vecb.value[i]) : maskResult.value[i];
     }
     CMU418Logger.addLog("veq", mask, VECTOR_WIDTH);

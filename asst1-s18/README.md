@@ -5,34 +5,37 @@
 关于SIMD的手动实现
 makefile不用看, look main. 
 ### main
-上来先prase **commandline options**, struct option是cpp常用库的类，语法可以学学
+    上来先prase **commandline options**, struct option是cpp常用库的类，语法可以学学
 
-init
+    init
 
-运行串行版本：clampedExpSerial -> gold
+    运行串行版本：clampedExpSerial -> gold
 
-向量版本：   clampedExpVector ->  output
+    向量版本：   clampedExpVector ->  output
 
-验证结果 (verifyResult)
+    验证结果 (verifyResult)
 
-打印性能统计 (CMU418Logger)
+    打印性能统计 (CMU418Logger)
 
-验证 ARRAY SUM (可选bonus)
+    验证 ARRAY SUM (可选bonus)
 
-delete
+    delete
 
-- 待完成的地方：
-    clampedExpVector
+- 整个项目待完成的地方：
+
+    - clampedExpVector
     
-    abs
+    - abs(作为参考，可以不实现maskvalid)
 
-    arraySumVector
+    - arraySumVector
 
 - 要点
-    使用向量化接口和掩码来完成赋值操作
-    __cmu418_vec_float x = _cmu418_vset_float(0.f);
-	_cmu418_vload_float(x, values + i, mask_valid); // load
-		
+    - 掩码是 0，指令对这些 Lane **什么都不做**，而不是替换为0！
+    - 要对什么进行操作，永远是先做一个掩码出来
+    - 使用向量化接口和掩码来完成赋值操作
+        __cmu418_vec_float x = _cmu418_vset_float(0.f);
+        _cmu418_vload_float(x, values + i, mask_valid); // load
+	- 我们无法直接对向量中的每个元素进行条件判断（因为每个元素的指数不同，循环次数可能不同）。所以我们需要一个循环，直到所有元素的指数都变为0。然而，向量操作是同时作用于所有通道的，所以我们需要一个循环，每次循环处理所有通道的当前最低位，然后同时右移。
 
 ## prog3
 用ISPC来计算mandelbrot
