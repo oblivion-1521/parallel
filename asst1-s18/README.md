@@ -1,4 +1,5 @@
 # 项目逻辑框架
+common文件夹下的内容cycletimer是计时，ppm是图像处理。
 ## prog1
 一个pthread的复习。没啥好讲的，看懂makefile即可
 ## prog2
@@ -40,6 +41,18 @@ makefile不用看, look main.
 ## prog3
 用ISPC来计算mandelbrot
 
+在开始前先apt install ispc
+
+然后安装了一个ispc的插件，好像不是很好用
+
+tasksys.cpp是任务并行接口,83行库不再用，改了
+- 管理并行任务的调度
+- 处理线程池和工作窃取
+- 与 ISPC 编译生成的代码完全独立
+
+makefile中ispc -h 直接生成头文件是 ISPC 编译器的内置功能
+
+这个任务好像没有要实现的功能，教学性质的。
 ## prog4
 use ISPC to calculate RMS
 

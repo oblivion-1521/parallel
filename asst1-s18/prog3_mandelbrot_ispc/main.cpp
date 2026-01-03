@@ -5,6 +5,8 @@
 #include "CycleTimer.h"
 #include "mandelbrot_ispc.h"
 
+//一般是在头文件中extern，源文件包含头文件直接使用变量，main进行定义
+//但是这个项目没写头文件，所以直接在main.cpp中extern声明
 extern void mandelbrotSerial(
     float x0, float y0, float x1, float y1,
     int width, int height,

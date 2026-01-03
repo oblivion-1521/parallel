@@ -79,7 +79,7 @@
   #include <sys/types.h>
   #include <sys/stat.h>
   #include <sys/param.h>
-  #include <sys/sysctl.h>
+  #include <unistd.h>  //这里原来的sysctl已经不存在了，这行删掉也可
   #include <vector>
   #include <algorithm>
 #endif // ISPC_USE_PTHREADS
