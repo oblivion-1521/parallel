@@ -1,4 +1,4 @@
-# 项目逻辑框架
+# asst1-s18项目逻辑框架
 common文件夹下的内容cycletimer是计时，ppm是图像处理。
 ## prog1
 一个pthread的复习。没啥好讲的，看懂makefile即可
@@ -53,6 +53,10 @@ tasksys.cpp是任务并行接口,83行库不再用，改了
 makefile中ispc -h 直接生成头文件是 ISPC 编译器的内置功能
 
 这个任务好像没有要实现的功能，教学性质的。
+
+一些简要的记录如下：
+- taskIndex is an ISPC built-in
+- 多task：launch[threadCount] func()    即可。
 ## prog4
 use ISPC to calculate RMS
 
@@ -65,6 +69,8 @@ SAXPY的多种并行实现
 static struct option[]	        定义结构体数组，static 让其只对本文件可见
 
 {"name", has_arg, flag, val}	选项结构：名字、是否需参、标志指针、返回值
+
+有关commandline options的内容在prog2的main里
 
 getopt_long()	                同时支持短选项和长选项的函数
 

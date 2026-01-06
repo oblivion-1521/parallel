@@ -5,8 +5,10 @@
 #include "CycleTimer.h"
 #include "mandelbrot_ispc.h"
 
-//一般是在头文件中extern，源文件包含头文件直接使用变量，main进行定义
+//一般是在头文件中extern，源文件包含头文件直接使用变量，main进行定义(只能由一次定义)
 //但是这个项目没写头文件，所以直接在main.cpp中extern声明
+
+//一开始先extern几个需要用到的函数(一般来讲只extern变量不extern函数)
 extern void mandelbrotSerial(
     float x0, float y0, float x1, float y1,
     int width, int height,
@@ -79,6 +81,7 @@ int main(int argc, char** argv) {
     const unsigned int height = 750;
     const int maxIterations = 256;
 
+    //复平面xy轴范围
     float x0 = -2.167;
     float x1 = 1.167;
     float y0 = -1;
@@ -96,7 +99,7 @@ int main(int argc, char** argv) {
     int opt;
     static struct option long_options[] = {
         {"tasks", 0, 0, 't'},
-        {"view",  1, 0, 'v'},
+        {"view",  1, 0, 'v'},           // view后面可以接一个参数，查看特定视图
         {"help",  0, 0, '?'},
         {0 ,0, 0, 0}
     };
@@ -129,6 +132,7 @@ int main(int argc, char** argv) {
     }
     // end parsing of commandline options
 
+    //一共是三个，分别是serial，ispc单核，ispc多核任务版
     int *output_serial = new int[width*height];
     int *output_ispc = new int[width*height];
     int *output_ispc_tasks = new int[width*height];
@@ -140,7 +144,7 @@ int main(int argc, char** argv) {
     // Run the serial implementation. Teport the minimum time of three
     // runs for robust timing.
     //
-    double minSerial = 1e30;
+    double minSerial = 1e30;        //设一个上界
     for (int i = 0; i < 3; ++i) {
         double startTime = CycleTimer::currentSeconds();
         mandelbrotSerial(x0, y0, x1, y1, width, height, 0, height, maxIterations, output_serial);

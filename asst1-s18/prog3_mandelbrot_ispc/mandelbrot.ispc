@@ -23,8 +23,9 @@ export void mandelbrot_ispc(uniform float x0, uniform float y0,
                             uniform int maxIterations,
                             uniform int output[])
 {
-    float dx = (x1 - x0) / width;
-    float dy = (y1 - y0) / height;
+    //这里原代码没有用uniform，有点小问题，应该加上
+    uniform float dx = (x1 - x0) / width;
+    uniform float dy = (y1 - y0) / height;
 
     foreach (j = 0 ... height, i = 0 ... width) {
             float x = x0 + i * dx;
@@ -45,13 +46,13 @@ task void mandelbrot_ispc_task(uniform float x0, uniform float y0,
 {
 
     // taskIndex is an ISPC built-in
-    
+    //相当于把图像拆小了，每个mandelbrot_ispc_task处理一部分行
     uniform int ystart = taskIndex * rowsPerTask;
     uniform int yend = min(ystart + rowsPerTask, height);
     
     uniform float dx = (x1 - x0) / width;
     uniform float dy = (y1 - y0) / height;
-    
+    // foreach的j从ystart到yend
     foreach (j = ystart ... yend, i = 0 ... width) {
             float x = x0 + i * dx;
             float y = y0 + j * dy;
@@ -67,8 +68,8 @@ export void mandelbrot_ispc_withtasks(uniform float x0, uniform float y0,
                                       uniform int maxIterations,
                                       uniform int output[])
 {
-
-    uniform int threadCount = 2;
+    //这里没有处理 height 不能被 threadCount 整除的情况，选threadCount要小心
+    uniform int threadCount = 15;
     uniform int rowsPerTask = height / threadCount;
 
     // create threadCount tasks

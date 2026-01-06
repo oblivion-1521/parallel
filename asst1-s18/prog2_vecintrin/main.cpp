@@ -45,6 +45,7 @@ int main(int argc, char * argv[]) {
   };
   
   // 根据选项一个个给opt赋值，switch看选项是啥
+  // getopt_long返回的是ASCII。case 's'这里s被解析为ASCII
   while ((opt = getopt_long(argc,                 //参数个数
                     argv,                         //参数数组 
                     "s:l?",                     //短选项格式 s:需要参数，冒号表示选项后必须跟值
@@ -53,7 +54,7 @@ int main(int argc, char * argv[]) {
                   ) != EOF) {        //所有选项被解析完时返回EOF (-1)
 
     switch (opt) {
-      case 's':                             
+      case 's': 
       // optarg是getopt的全局变量，extern过了，存储紧跟在有参数选项后面的值
         N = atoi(optarg);                    // 将参数转为整数
         if (N <= 0) {                        // 检查是否合法
